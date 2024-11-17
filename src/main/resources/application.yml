@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: user-managment-service
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost:9092}
+    consumer:
+      group-id: your-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  datasource:
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: ${PORT:8888}
+hazelcast:
+  network:
+    join:
+      multicast:
+        enabled: false
+      tcp-ip:
+        enabled: true
+        member: 127.0.0.1
+
+
+springdoc:
+  api-docs:
+    enabled: true # Enable the OpenAPI documentation generation
+    path: /v3/api-docs # Path where the API docs will be available
+  swagger-ui:
+    enabled: true # Enable Swagger UI
+    path: /swagger-ui.html # Path to access Swagger UI
+    display-request-duration: true # Show the duration of each request in the UI
+  info:
+    title: User Management API # Title of your API
+    description: API documentation for the User Management Service # Description of your API
+    version: 1.0.0 # Version of your API
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b}
+    expiration-time: ${JWT_EXPIRATION_TIME:3600000}
+
+
